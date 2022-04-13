@@ -74,13 +74,13 @@ func main() {
 
 
 	if len(vDblist) == 1 {
-		export := dblib.TableSummary(vHost,vPort,vUser,vPass,vDb,vTBCnt,nTBlist,vPath)
+		export := lib.TableSummary(vHost,vPort,vUser,vPass,vDb,vTBCnt,nTBlist,vPath)
 		if export == 1 {
 			fmt.Println(fmt.Sprintf("%s Table Summary Export Success.",vDb))
 		}
 	} else {
 		for _,dbnm := range vDblist {
-			export := dblib.TableSummary(vHost,vPort,vUser,vPass,dbnm,vTBCnt,nTBlist,vPath)
+			export := lib.TableSummary(vHost,vPort,vUser,vPass,dbnm,vTBCnt,nTBlist,vPath)
 			if export == 1 {
 				fmt.Println(fmt.Sprintf("%s Table Summary Export Success.",dbnm))
 			}
