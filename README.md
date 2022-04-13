@@ -15,12 +15,12 @@ Host: localhost
 Port(3306):     
 User: root
 Pass: *********
-Database: nft_uat
+Database: testDB
 Table name Like Condition: 
 FilePath: ./
 Table Summary Export Success.
 ```
->컴파일된 툴은 Max 지원입니다. 
+>컴파일된 툴은 Mac M1 지원 입니다. 
 - Host : 접근 DB Host를 입력합니다. 
 - Port : 기본 포트 3306 으로 지정됩니다.
 - User : DB 접근 계정
