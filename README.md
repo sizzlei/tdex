@@ -44,4 +44,4 @@ Table Summary Export Success.
 
 ## Export
 ---
-![추출](/tdex/img/tdex_export_excel.png)
+![추출](/img/tdex_export_excel.png)
