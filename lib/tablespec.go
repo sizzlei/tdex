@@ -54,15 +54,6 @@ func now() string{
 
 func TableSummary(fHost string, fPort string, fUser string, fPass string,fDb string,fLikePnt int,fLike []string,fPath string) int {
 	
-	// srvhost := flag.String("host","localhost","Target Database Host.")
-	// srvport := flag.String("port","3306","Target Database Port.")
-	// srvuser := flag.String("user","root","Database Connect User.")
-	// srvpass := flag.String("password","","Database Connect Password.")
-	// xlsfile := flag.String("file","default.xlsx","Export File Path and Name.")
-	// srvdb := flag.String("database","mysql","Export for Database.")
-
-	// flag.Parse()
-
 	// Declare Config
 	var srvHost string = fHost
 	var srvPort string = fPort
@@ -189,17 +180,20 @@ func TableSummary(fHost string, fPort string, fUser string, fPass string,fDb str
 		
 		*/
 		// Column Title
-		colDiv := []string{"A","B","C","D","E","F","G","H","I","J"}
-		colNames := []string{"No","Column Name","Data Type","Length","Nullable","Key","Extra","Collation","Default","Comment"}
+		colDiv := []string{"A","B","C","E","F","G","H","I","J"}
+		colNames := []string{"No","Column Name","Data Type","Nullable","Key","Extra","Collation","Default","Comment"}
 
 		for idx, colNm := range colNames {
+			if colNm == "Data Type" {
+				exFile.MergeCell(srvDB, fmt.Sprintf("C%d",colRownum), fmt.Sprintf("D%d",colRownum))
+			}
 			exFile.SetCellValue(srvDB, fmt.Sprintf("%s%d",colDiv[idx],colRownum),colNm)
 			exFile.SetCellStyle(srvDB, fmt.Sprintf("%s%d",colDiv[idx],colRownum), fmt.Sprintf("%s%d",colDiv[idx],colRownum),exTitle)
 		}
 		colRownum += 1
 
 		// Get Column
-		var getColFormat string = "SELECT column_name,column_default,is_nullable,data_type,character_maximum_length AS column_length,character_set_name,collation_name,column_key,extra,column_comment FROM information_schema.COLUMNS WHERE table_name='%s' AND table_schema='%s' ORDER BY ordinal_position;"
+		var getColFormat string = "SELECT column_name,column_default,is_nullable,column_type,character_set_name,collation_name,column_key,extra,column_comment FROM information_schema.COLUMNS WHERE table_name='%s' AND table_schema='%s' ORDER BY ordinal_position;"
 		var getCol string = fmt.Sprintf(getColFormat,dvTB.table_nm,dvTB.schema)
 		colRows, err := dbCon.Query(getCol)
 		if err != nil {
@@ -215,7 +209,6 @@ func TableSummary(fHost string, fPort string, fUser string, fPass string,fDb str
 				&dvCol.col_default,
 				&dvCol.nullable,
 				&dvCol.col_type,
-				&dvCol.col_length,
 				&dvCol.charset,
 				&dvCol.collation,
 				&dvCol.colkey,
@@ -231,11 +224,12 @@ func TableSummary(fHost string, fPort string, fUser string, fPass string,fDb str
 			// Column Name
 			exFile.SetCellValue(srvDB,fmt.Sprintf("B%d",colRownum),dvCol.col_nm)
 			// Column Type
+			exFile.MergeCell(srvDB, fmt.Sprintf("C%d",colRownum), fmt.Sprintf("D%d",colRownum))
 			exFile.SetCellValue(srvDB,fmt.Sprintf("C%d",colRownum),dvCol.col_type)
 			// Column Length
-			if dvCol.col_length.Valid {
-				exFile.SetCellValue(srvDB,fmt.Sprintf("D%d",colRownum),dvCol.col_length.Int64)
-			}
+			// if dvCol.col_length.Valid {
+			// 	exFile.SetCellValue(srvDB,fmt.Sprintf("D%d",colRownum),dvCol.col_length.Int64)
+			// }
 			// Column Nullable
 			exFile.SetCellValue(srvDB,fmt.Sprintf("E%d",colRownum),dvCol.nullable)
 			// Column Key
