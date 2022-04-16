@@ -68,7 +68,7 @@ func TableSummary(fHost string, fPort string, fUser string, fPass string,fDb str
 	var dvConst colConst
 	var dvIdx colIndex
 	// database Connection
-	var dnsFormat string = "%s:%s@tcp(%s:%s)/information_schema"
+	var dnsFormat string = "%s:%s@tcp(%s:%s)/information_schema?sql_mode=NO_ENGINE_SUBSTITUTION"
 	var DNS string = fmt.Sprintf(dnsFormat,srvUser,srvPass,srvHost,srvPort)
 	dbCon, err := sql.Open("mysql",DNS)
 	if err != nil {
